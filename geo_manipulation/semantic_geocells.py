@@ -269,7 +269,7 @@ def optics_routine(
     geocells, creating new ones by computing the Voronoi diagram from the samples within the same cluster.
     This process results in a new GeoPandas DataFrame containing the geometries of the new geocells.
     :param merged_cells_img: The GeoPandas DataFrame linking the merged cells to the
-     indexes of the images contained in each of them. Output of merge_cells passed to images_in_cells.
+     indexes of the images contained in each of them.
     :param point_coords: The lat/long coordinates of the images.
     :param minsamples_optics: The current minsample hyperparameter for OPTICS.
     :param xi_optics: The current xi hyperparameter for OPTICS.
@@ -487,7 +487,7 @@ def geocell_centroid(merged_cells_optics: geopd.GeoDataFrame) -> np.ndarray:
     This function computes the centroid for each geocell. It returns latitude/longitude as a numpy.ndarray.
     :param merged_cells_optics: A GeoPandas DataFrame with the cells after OPTICS info; output expected with same
     signature as output of cluster_split.
-    :return: A numpy.ndarray.
+    :return: A Numpy array.
     """
     centroids = list()
     for i, (idx, row) in (
@@ -513,28 +513,3 @@ def geocell_centroid(merged_cells_optics: geopd.GeoDataFrame) -> np.ndarray:
 
     return centroids
 
-
-if __name__ == "__main__":
-    from utility_geo import images_in_cells, init_cells
-
-    # init_data = init_cells("../../gadm_410-levels.gpkg")
-    # init_data.to_feather("../init_cells_out.feather")
-    #
-    # merged = merge_cells(
-    #     "../images_flickr.csv",
-    #     geopd.read_feather("../init_cells_out.feather"),
-    #     threshold=55,
-    # )
-    # merged.to_feather("../merged_cells.feather")
-
-    # out = cluster_split(
-    #     geopd.read_feather("../merged_cells.feather"),
-    #     "../images_flickr.csv",
-    #     minsamples_optics_grid=[10],
-    #     xis_optics_grid=[0.1],
-    #     minsize=55,
-    # )
-    #
-    # out.to_feather("../cluster_split_cells.feather")
-
-    np.save("../cell_centroids.npy", geocell_centroid(geopd.read_feather("../cluster_split_cells.feather")))

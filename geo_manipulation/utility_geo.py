@@ -1,6 +1,5 @@
 import geopandas as geopd
 import pandas as pd
-import numpy as np
 
 
 def init_cells(data_path: str) -> geopd.GeoDataFrame:
@@ -106,30 +105,3 @@ def images_in_cells(
 
     return cells
 
-
-def train_test_val(path: str, write: bool):
-    """
-    Create Train/test/val split
-    path: Path to main images.csv file
-    write:if you want to save the splits
-
-    """
-
-    df_main = pd.read_csv(path)
-
-    train, val, test = np.split(
-        df_main.sample(frac=1, random_state=420),
-        [int(0.7 * len(df_main)), int(0.85 * len(df_main))],
-    )
-
-    if write:
-        pd.DataFrame.to_csv(train, "./train_split.csv", index=False)
-        pd.DataFrame.to_csv(val, "./val_split.csv", index=False)
-        pd.DataFrame.to_csv(test, "./test_split.csv", index=False)
-
-    return train, val, test
-
-
-if __name__ == "__main__":
-    init_data = init_cells('../gadm_410-levels.gpkg')
-    init_data.to_feather('init_cells_out.feather')
